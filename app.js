@@ -29,10 +29,16 @@ const loginRoute = require('./routes/login');
 
 app.use('/login', loginRoute);
 
+const test = require('./routes/payments');
+app.use('/test', test);
+
 //
 
 const paymentDataRoute = require('./routes/payments');
 app.use('/payments', paymentDataRoute );
+
+
+
 
 
 
@@ -45,7 +51,7 @@ app.use('/payments', paymentDataRoute );
 
 
 //coonect to DB
-mongoose.connect('mongodb://localhost:27017/payment-api', () =>
+mongoose.connect('mongodb://localhost:27017/payment-api',{ ignoreUndefined: true }, () =>
 console.log('connected to database..f'));
 
 

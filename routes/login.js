@@ -10,7 +10,6 @@ const JWT_SECRET = 'dbfsdjfnsd djs foidsfsdj osdfsdj fpdsf';
 
 
 router.post('/', async (req, res) => {
-
    
     try{
         const {username, password} = req.body;
