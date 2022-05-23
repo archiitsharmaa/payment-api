@@ -21,7 +21,7 @@ router.post('/',verify, async (req, res) => {
 
 
         //addign pagination
-        const {page =1, limit = 10} = req.query;
+        const {page =1, limit = 5} = req.query;
     
     const payments = await Payments.find({
         userId:userId,
