@@ -22,6 +22,28 @@ router.post('/',verify, async (req, res) => {
 
         //addign pagination
         const {page =1, limit = 5} = req.query;
+
+        const pagesData = await Payments.find({
+            userId:userId,
+            confirmationNumber:confirmationNumber,
+            paymentType:paymentType,
+            accountNumber:accountNumber,
+            email:email,
+            channel:channel,
+    
+            paymentAmount: {
+                $gte: AmountMinRange,
+                $lte: AmountMaxRange
+            },
+    
+            paymentDate : {
+            $gte: paymentstartDate,
+            $lte: paymentendDate
+           },
+    
+            paymentMethod:paymentMethod,
+            Status:Status
+        })
     
     const payments = await Payments.find({
         userId:userId,
@@ -46,8 +68,10 @@ router.post('/',verify, async (req, res) => {
     })
     .limit(limit *1)
     .skip((page-1)*limit);
+
+    const numberOfPages = Math.ceil(pagesData.length / limit);
     
-    return res.json(payments);
+    return res.json({numberOfPages, payments});
     
 })
 
