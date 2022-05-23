@@ -29,23 +29,13 @@ const PaymentSchema = mongoose.Schema({
         required:true
 
     },
-    paymentAmountMinRange:{
+    paymentDate:{
+        type: Date,
+        required : true
+    },
+    paymentAmount:{
         type: Number,
         required : true
-    },
-    paymentAmountMaxRange: {
-        type : Number,
-        required:true
-
-    },
-    startDate:{
-        type: String,
-        required : true
-    },
-    endDate: {
-        type : String,
-        required:true
-
     },
     paymentMethod:{
         type: String,
