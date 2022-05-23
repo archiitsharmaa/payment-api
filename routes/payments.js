@@ -43,6 +43,7 @@ router.post('/',verify, async (req, res) => {
     
             paymentMethod:paymentMethod,
             Status:Status
+            
         })
     
     const payments = await Payments.find({
@@ -73,6 +74,19 @@ router.post('/',verify, async (req, res) => {
     
     return res.json({numberOfPages, payments});
     
+})
+
+router.post('/paymentDetails',verify, async (req, res) => {
+
+    const {confirmationNumber} = req.body;
+
+    const payment = await Payments.find({
+        confirmationNumber:confirmationNumber
+
+})
+
+return res.json(payment);
+
 })
 
 

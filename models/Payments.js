@@ -45,7 +45,33 @@ const PaymentSchema = mongoose.Schema({
         type : String,
         required:true
 
-    }
+    },
+    cardType: {
+        type : String,
+        required:true
+
+    },
+    cardNumber: {
+        type : String,
+        required:true
+
+    },
+    Name: {
+        type : String,
+        required:true
+
+    },
+    contactNumber: {
+        type : String,
+        required:true
+
+    },
+    Zip: {
+        type : String,
+        required:true
+
+    },
+
 
 })
 
