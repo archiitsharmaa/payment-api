@@ -3,9 +3,13 @@ const router = express.Router();
 const Users = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const refreshVerify = require('./verifyrefreshToken')
+const tokenGenrate = require('./token');
 const { append } = require('express/lib/response');
+const { required } = require('nodemon/lib/config');
 
 const JWT_SECRET = 'dbfsdjfnsd djs foidsfsdj osdfsdj fpdsf';
+const REFRESH_SECRET = 'dbfryyrtysdjfnsd djs foitrydsfsdj osdfryrsdj fpdsf';
 
 
 
@@ -27,9 +31,16 @@ router.post('/', async (req, res) => {
             const token = jwt.sign({
                 id: user._id,
                 username: user.username
-            },JWT_SECRET);
+            },JWT_SECRET,{expiresIn:'900s'});
 
-            return res.header('auth-token', token).send(token);
+
+            const refreshtoken = jwt.sign({
+                id: user._id,
+                username: user.username
+            },REFRESH_SECRET,{expiresIn:'5d'});
+
+
+            return res.header('auth-token', token).send({token, refreshtoken});
         }
     
         res.json ({status : 'error', error : 'Invalid Username/password'});
@@ -38,6 +49,33 @@ router.post('/', async (req, res) => {
     }catch(err){
         res.json({message: err});
     }
+}
+)
+
+
+
+    router.post('/refresh-token', async (req, res) => {
+        try{
+         const {refreshtoken} = req.body;
+
+           if(!refreshtoken) throw createError.BadRequest();
+           const verified = await refreshVerify(refreshtoken);
+           if(!verified) {
+               res.json({"mssg" : "Invalid refresh token"});
+               return;
+           }
+           else{
+              const a = tokenGenrate(verified.id, verified.username);
+               res.json(tokenGenrate(verified.id, verified.username));
+               return;
+           }
+           next();
+
+        }
+           catch(err){
+            res.json({"mssg" : "Invalid refresh token"});   
+           }
+
     
 
 
