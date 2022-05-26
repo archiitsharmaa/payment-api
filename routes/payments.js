@@ -4,6 +4,7 @@ const verify = require('./verifyToken');
 
 const Payments = require('../models/Payments');
 const { db } = require('../models/Payments');
+const { json } = require('express/lib/response');
 
 router.post('/',verify, async (req, res) => {
 
@@ -88,6 +89,25 @@ router.post('/paymentDetails',verify, async (req, res) => {
 return res.json(payment);
 
 })
+
+router.post('/meta-data', verify, async (req, res) => {
+
+     try{
+        const metaFeildsPaymentType = await Payments.find().distinct('paymentType');
+        const metaFeildsPaymentMethod = await Payments.find().distinct('paymentMethod');
+        const metaFeildsStatus = await Payments.find().distinct('Status');
+
+    
+    return res.json({metaFeildsPaymentType:metaFeildsPaymentType,metaFeildsPaymentMethod:metaFeildsPaymentMethod, metaFeildsStatus :metaFeildsStatus})
+     }
+     catch(err){
+       return  res.json({"mssg" : "Invalid refresh token"});
+     }
+
+
+
+});
+
 
 
 module.exports = router;
