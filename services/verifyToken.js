@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const JWT_SECRET = 'dbfsdjfnsd djs foidsfsdj osdfsdj fpdsf';
 
+
 function auth(req,res,next) {
 
     const token = req.header('auth-token');
@@ -18,5 +19,7 @@ function auth(req,res,next) {
     }
 
 }
+
+
 
 module.exports = auth;
