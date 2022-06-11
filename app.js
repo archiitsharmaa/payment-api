@@ -4,8 +4,11 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors')
 const app = express();
-const loginRoute = require('./routes/loginRoute');
-const paymentDataRoute = require('./routes/paymentsRoute');
+const routes = require('./routes/routes');
+const logger = require("./logger");
+
+var PropertiesReader = require('properties-reader');
+var properties = PropertiesReader('config/app.properties');
 
 
 class Server {
@@ -18,8 +21,15 @@ class Server {
     }
 
     start() {
+
+        try{
         //listen on a port
-        app.listen(3000);
+        app.listen(properties.get("severPort"));
+        logger.info('Server listening at the port ' + properties.get("severPort"));
+        }
+        catch(err){
+            logger.error('Error listening at the port ' + properties.get("severPort"));
+        }
     }
 
     initExpressMiddleware() {
@@ -29,36 +39,23 @@ class Server {
     }
 
     initRoutes() {
-        app.use('/login', loginRoute);
-        app.use('/payments', paymentDataRoute );
+        app.use('/', routes);
 
     }
 
     initDB() {
+        
+        try{
         //coonect to DB
         mongoose.connect('mongodb://localhost:27017/payment-api',{ ignoreUndefined: true }, () =>
-        console.log('connected to database..'));
-        const logger = require("./logger");
-
-        logger.info("this is the place where");
+        logger.info("Connected to Database"));
+        }
+        catch(err){
+            logger.error('Error While Connecting to database');
+        }
     }
 
 
 }
 
 new Server();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
