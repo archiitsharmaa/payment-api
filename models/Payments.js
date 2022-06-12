@@ -1,6 +1,8 @@
+//importing moongose module for mongodb
 const mongoose = require('mongoose');
 const { required } = require('nodemon/lib/config');
 
+//declaring the Payment schema with feilds
 const PaymentSchema = mongoose.Schema({
     userId:{
         type: Number,

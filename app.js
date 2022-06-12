@@ -1,18 +1,31 @@
+//imprting express module
 const express = require('express');
-const req = require('express/lib/request');
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
-const cors = require('cors')
 const app = express();
+const req = require('express/lib/request');
+
+//importing mongoose for mongodb
+const mongoose = require('mongoose');
+
+//importing body parser to use json
+const bodyParser = require('body-parser');
+
+//importing cors value
+const cors = require('cors')
+
+//importing route middleware
 const routes = require('./routes/routes');
+
+//importing login module
 const logger = require("./logger");
 
+//importing values for config file
 var PropertiesReader = require('properties-reader');
 var properties = PropertiesReader('config/app.properties');
 
-
+//main class to run app
 class Server {
 
+    //constructr
     constructor() {
         this.initDB();
         this.initExpressMiddleware();
@@ -20,6 +33,7 @@ class Server {
         this.start();
     }
 
+    //method to start the pp
     start() {
 
         try{
@@ -28,26 +42,30 @@ class Server {
         logger.info('Server listening at the port ' + properties.get("severPort"));
         }
         catch(err){
+            //error handling
             logger.error('Error listening at the port ' + properties.get("severPort"));
         }
     }
 
+    //method calling middlewares
     initExpressMiddleware() {
         //cors issue
         app.use(cors())
         app.use(bodyParser.json());
     }
 
+    //method intializing routes
     initRoutes() {
         app.use('/', routes);
 
     }
 
+    //method connecting to database
     initDB() {
         
         try{
         //coonect to DB
-        mongoose.connect('mongodb://localhost:27017/payment-api',{ ignoreUndefined: true }, () =>
+        mongoose.connect(properties.get("DATABASE_PATH"),{ ignoreUndefined: true }, () =>
         logger.info("Connected to Database"));
         }
         catch(err){
