@@ -1,6 +1,9 @@
 //importing jwt to use jwt features
 const jwt = require('jsonwebtoken');
 
+//importing roleAuthentication
+const roleAuthentication = require("./roleAuthentication");
+
 //importing logger module
 const logger = require("../../logger");
 
@@ -12,7 +15,7 @@ var properties = PropertiesReader('config/app.properties');
 const JWT_SECRET = properties.get("JWT_SECRET");
 
 //method to verify jwt token
-function auth(req,res,next) {
+async function auth(req,res,next) {
 
     //fetching token from request header
     const token = req.header('auth-token');
@@ -22,8 +25,15 @@ function auth(req,res,next) {
     return res.status(401).send('Acess Denied');
 
     try{
+    
         //verifying jwt token
         const verified = jwt.verify(token, JWT_SECRET);
+
+        //checking for role acess in acessing user paths
+        if(await roleAuthentication(verified, req.url) === 'Acess Denied'){
+            return res.status(401).send('Acess Denied');
+        }
+
         req.user = verified;
         next();
     }

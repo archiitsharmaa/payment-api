@@ -51,10 +51,13 @@ async function loginService(req,res){
                 username: user.username
             },REFRESH_SECRET,{expiresIn:'5d'});
 
+            const userType = user.userType;
+            const userId = user.userId;
+
             logger.info("Login attempt successful for user : " + username);
 
             //returning JWT Token and  Refresh Token
-            return res.header('auth-token', token).send({token, refreshtoken});
+            return res.header('auth-token', token).send({token, refreshtoken, userType, userId});
         }
 
         logger.info("Login attempt using Invalid Username/password");
@@ -64,6 +67,7 @@ async function loginService(req,res){
 
 
     }catch(err){
+        console.log(err);
         logger.error("Error in Login attempt");
         //error handling
         res.json({"message": "Error in login attempts"});

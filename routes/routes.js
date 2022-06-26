@@ -21,6 +21,8 @@ const paymentDataService = require('../services/routeService/paymentRoutes/payme
 const paymentDetailsService = require('../services/routeService/paymentRoutes/paymentDetails');
 //importing payment meta data sevices to fetch payments meta data for fetching dynamic feilds value
 const paymentMetaDataService = require('../services/routeService/paymentRoutes/paymentMetaData')
+//importing payment meta data sevices to fetch payments meta data for fetching dynamic feilds value
+const billerPaymentData = require('../services/routeService/paymentRoutes/billerPaymentData')
 
 //payment class for defining routes
 class Payment{
@@ -30,6 +32,7 @@ class Payment{
         this.paymentData();
         this.paymentDetails();
         this.paymentMetaData();
+        this.paymentbiller();
         this.loginUser();
         this.refreshToken();
         this.newToken();
@@ -59,6 +62,15 @@ class Payment{
            return await paymentMetaDataService(res);
        })
 
+    }
+
+    //method calling payment details for details of payment biller
+    paymentbiller() {
+
+        router.post('/biller-payments',verify, async (req, res) => {
+            return await billerPaymentData(req,res);
+        })
+        
     }
 
    //method calling login route for verifying login credentials and genrating refresh and jwt token

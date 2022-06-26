@@ -36,12 +36,11 @@ class Server {
     //method to start the pp
     start() {
 
-        try{
-        //listen on a port
-        app.listen(properties.get("severPort"));
-        logger.info('Server listening at the port ' + properties.get("severPort"));
-        }
-        catch(err){
+        try {
+            //listen on a port
+            app.listen(properties.get("severPort"));
+            logger.info('Server listening at the port ' + properties.get("severPort"));
+        } catch (err) {
             //error handling
             logger.error('Error listening at the port ' + properties.get("severPort"));
         }
@@ -62,13 +61,14 @@ class Server {
 
     //method connecting to database
     initDB() {
-        
-        try{
-        //coonect to DB
-        mongoose.connect(properties.get("DATABASE_PATH"),{ ignoreUndefined: true }, () =>
-        logger.info("Connected to Database"));
-        }
-        catch(err){
+
+        try {
+            //coonect to DB
+            mongoose.connect(properties.get("DATABASE_PATH"), {
+                    ignoreUndefined: true
+                }, () =>
+                logger.info("Connected to Database"));
+        } catch (err) {
             logger.error('Error While Connecting to database');
         }
     }

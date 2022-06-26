@@ -10,6 +10,8 @@ async function paymentDetailsService(req,res){
     //fetching confirmation number from request body
     const {confirmationNumber} = req.body;
 
+    console.log("*******");
+
     try{
     
         //finding data based on confirmation details
