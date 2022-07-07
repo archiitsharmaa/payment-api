@@ -1,4 +1,4 @@
-//imprting express module
+//importing express module
 const express = require('express');
 const app = express();
 const req = require('express/lib/request');
